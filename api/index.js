@@ -1,10 +1,11 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-
-
+const routes = require('./routes');
+const formatosAceitos = require('./serializador/Serializador').formatosAceitos
+const NaoEncontrado = require('./erros/NaoEncontrado');
+const CampoInvalido = require('./erros/CampoInvalido');
+const DadosNaoFornecidos = require('./erros/DadosNaoFornecidos');
+const ValorNaoSuportado = require('./erros/ValorNaoSuportado');
 let app = express();
-
-app.use(bodyParser.json());
 
 //MIDDLEWARE de tipo de formato suportado
 app.use((requisicao, resposta, proximo) => {
@@ -31,6 +32,8 @@ app.use((requisicao, resposta, proximo) => {
     proximo();
 });
 
+routes(app);
+
 //MIDDLEWARE tratamento de erros personalizados
 app.use((erro, requisicao, resposta, proximo) => {
   let status = 500
@@ -56,6 +59,6 @@ app.use((erro, requisicao, resposta, proximo) => {
   )
 })
 
-app.listen(3000, ()=>{
-  console.log('Server is runing on port 3000');
-});
+app.listen(3000, ()=>{console.log('Server is runing on port 3000');});
+
+module.exports = app;
