@@ -73,10 +73,33 @@ class SerializadorPessoa extends Serializador {
   }
 }
 
+class SerializadorNivel extends Serializador {
+
+  constructor (contentType, camposExtras) {
+    super();
+    this.contentType = contentType;
+    this.camposPublicos = ["descr_nivel"].concat(camposExtras || []);
+    this.tagSimples="nivel";
+    this.tagList="niveis";
+  }
+}
+
+class SerializadorTurma extends Serializador {
+
+  constructor (contentType, camposExtras) {
+    super();
+    this.contentType = contentType;
+    this.camposPublicos = ["data_inicio, docente, nivel"].concat(camposExtras || []);
+    this.tagSimples="turma";
+    this.tagList="turmas";
+  }
+}
+
 
 module.exports = {
   formatosAceitos: ['application/json'],
   Serializador,
-  SerializadorPessoa
-
+  SerializadorPessoa,
+  SerializadorNivel,
+  SerializadorTurma
 }

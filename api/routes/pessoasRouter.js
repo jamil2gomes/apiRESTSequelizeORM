@@ -1,7 +1,9 @@
 const {Router} = require('express');
+const service = require('../services/pessoaservice');
 const PessoaController = require('../controllers/PessoaController');
-
+const roteadorMatricula = require('./matriculaRouter');
 const router = Router();
+
 
 router.options('/pessoas', (requisicao, resposta) => {
   resposta.set('Access-Control-Allow-Methods', 'GET, POST');
@@ -24,5 +26,19 @@ router.get('/pessoas/:id', PessoaController.getBy);
 router.put('/pessoas/:id', PessoaController.update);
 
 router.delete('/pessoas/:id', PessoaController.delete);
+
+
+const verificarEstudante = async(requisicao, resposta, proximo) =>{
+  try {
+    const id = requisicao.params.id;
+    const estudante =  await service.getBy(id);
+    requisicao.estudante = estudante;
+    proximo();
+  } catch (error) {
+    proximo(error);
+  }
+}
+
+router.use('/pessoas/:id/matriculas/', verificarEstudante, roteadorMatricula);
 
 module.exports = router;

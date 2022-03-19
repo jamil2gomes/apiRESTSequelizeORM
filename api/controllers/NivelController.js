@@ -1,19 +1,19 @@
-const service = require('../services/pessoaservice');
-const SerializadorPessoa = require('../serializador/Serializador').SerializadorPessoa;
+const service = require('../services/nivelservice');
+const SerializadorNivel = require('../serializador/Serializador').SerializadorNivel;
 
-class PessoaController {
+class NivelController {
 
   static async getAll(requisicao, resposta, proximo){
 
     try {
-      const pessoas = await service.getAll();
+      const niveis = await service.getAll();
 
-      const serializador = new SerializadorPessoa(
+      const serializador = new SerializadorNivel(
         resposta.getHeader('Content-Type')
       );
 
       resposta.status(200).send(
-        serializador.serializar(pessoas)
+       niveis
       );
     } catch (error) {
       proximo(error);
@@ -25,18 +25,18 @@ class PessoaController {
 
     try {
       const dadosRecebidos = requisicao.body;
-      const pessoa = await service.create(dadosRecebidos);
+      const nivel = await service.create(dadosRecebidos);
 
-      const serializador = new SerializadorPessoa(
+      const serializador = new SerializadorNivel(
         resposta.getHeader('Content-Type')
       );
       
-      const timestamp = (new Date(pessoa.updatedAt)).getTime();
+      const timestamp = (new Date(nivel.updatedAt)).getTime();
       resposta.set('Last-Modified',timestamp);
-      resposta.set('Location',`pessoas/`);
+      resposta.set('Location',`niveis/`);
 
       resposta.status(201).send(
-        serializador.serializar(pessoa)
+        serializador.serializar(nivel)
       );
     } catch (error) {
       proximo(error);
@@ -48,15 +48,15 @@ class PessoaController {
 
     try {
       const {id} = requisicao.params;
-      const pessoa = await service.getBy(id);
+      const nivel = await service.getBy(id);
 
-      const serializador = new SerializadorPessoa(
+      const serializador = new SerializadorNivel(
         resposta.getHeader('Content-Type'),
-        ['email','role', 'createdAt', 'updatedAt']
+        ['id', 'createdAt', 'updatedAt']
       );
 
       resposta.status(200).send(
-        serializador.serializar(pessoa)
+        serializador.serializar(nivel)
       );
     } catch (error) {
       proximo(error);
@@ -93,6 +93,8 @@ class PessoaController {
     }
 
   }
+
+
 }
 
-module.exports = PessoaController;
+module.exports = NivelController;
