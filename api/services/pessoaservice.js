@@ -71,4 +71,10 @@ module.exports = {
           where: {id}
     });
   },
+
+  async restaura(id) {
+    return await Pessoas.restore({
+          where: {id}
+    });
+  },
 }

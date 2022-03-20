@@ -27,6 +27,13 @@ router.put('/pessoas/:id', PessoaController.update);
 
 router.delete('/pessoas/:id', PessoaController.delete);
 
+router.options('/pessoas/:id/restaura', (requisicao, resposta) => {
+  resposta.set('Access-Control-Allow-Methods', 'POST');
+  resposta.set('Access-Control-Allow-Headers', 'Content-Type');
+  resposta.status(204).end();
+});
+router.post('/pessoas/:id/restaura', PessoaController.restaura);
+
 
 const verificarEstudante = async(requisicao, resposta, proximo) =>{
   try {

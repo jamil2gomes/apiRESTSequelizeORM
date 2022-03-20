@@ -93,6 +93,20 @@ class PessoaController {
     }
 
   }
+
+  static async restaura(requisicao, resposta, proximo){
+
+    try {
+      const {id} = requisicao.params;
+     
+      await service.restaura(id);
+
+      resposta.status(204).end();
+    } catch (error) {
+      proximo(error);
+    }
+
+  }
 }
 
 module.exports = PessoaController;
