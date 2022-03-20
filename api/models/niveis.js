@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     descr_nivel: DataTypes.STRING
   }, {
     sequelize,
+    polaroid:true,
     modelName: 'Niveis',
   });
   return Niveis;
